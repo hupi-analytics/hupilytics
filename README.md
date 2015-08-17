@@ -9,7 +9,7 @@ This API has only been tested with [Piwik 2.13.1](https://github.com/piwik/piwik
 To send analytic data to the Hupi Catchbox API, just set the 'setTrackerUrl' param to "http://api.catchbox.hupi.io/v1/$your_brand/hupilytics", and voilà !
 
 To handle more datas in the API, just refer to [Piwik's Tracking API Docs](http://developer.piwik.org/api-reference/tracking-api),
-and [Piwik's JavaScript Tracking Client Docs](http://developer.piwik.org/api-reference/tracking-javascript).
+ [Piwik's JavaScript Tracking Client Docs](http://developer.piwik.org/api-reference/tracking-javascript), and [Piwik's Custom Variable Docs](http://piwik.org/docs/custom-variables).
 
 Example:
 
