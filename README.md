@@ -1,12 +1,13 @@
 # Hupilytics
 
-Hupi Catchbox API is compatible with Piwik JavaScript Tracking Client [piwik.js](https://github.com/piwik/piwik/blob/master/js/piwik.js). This allows to host the analytic datas within the Hupi servers, which turn data into awesome.
+Hupi Catchbox API is compatible with JavaScript Tracking Client.
+This allows to host the analytic datas within the Hupi servers, which turn data into awesome.
 
-This API has only been tested with [Piwik 2.13.1](https://github.com/piwik/piwik/releases/tag/2.13.1) yet. It is planned to keep compatibility with [Piwik 2.14 (and future)](https://github.com/piwik/piwik/tags) releases of Piwik.js.
+This API has been tested.
 
-## How to integrate piwik.js w/ Catchbox API to your website
+## How to integrate Catchbox API to your website
 
-To send analytic data to the Hupi Catchbox API, just set the 'setTrackerUrl' param to "http://api.catchbox.hupi.io/v1/$your_brand/hupilytics", and voilà !
+To send analytic data to the Hupi Catchbox API, just set the 'setTrackerUrl' param to "http://api.catchbox.hupi.io/v1/$your_account/hupilytics", and voilà !
 
 To handle more datas in the API, just refer to [Piwik's Tracking API Docs](http://developer.piwik.org/api-reference/tracking-api),
  [Piwik's JavaScript Tracking Client Docs](http://developer.piwik.org/api-reference/tracking-javascript), and [Piwik's Custom Variable Docs](http://piwik.org/docs/custom-variables).
