@@ -1,29 +1,27 @@
 # Hupilytics
+This allow to send analytics data (like google analytics) within hupi's servers.
+hupilytics.js is a fork of [piwik.js](https://github.com/piwik/piwik/blob/master/js/piwik.js), there for hupilytics.js is licensed under the same terms as the piwik.js (GPL v3)
 
-Hupi Catchbox API is compatible with JavaScript Tracking Client.
-This allows to host the analytic datas within the Hupi servers, which turn data into awesome.
+## How to integrate hupilytics.js to your website
+Add hupilytics.js in the assets of your website and require the script in your website head (see one example below).
+To send analytic data to hupi's servers , set the `setTrackerUrl` parameter to `http://api.catchbox.hupi.io/v1/(:account)/hupilytics`.
 
-This API has been tested.
-
-## How to integrate Catchbox API to your website
-
-To send analytic data to the Hupi Catchbox API, just set the 'setTrackerUrl' param to "http://api.catchbox.hupi.io/v1/$your_account/hupilytics", and voilà !
-
-To handle more datas in the API, just refer to [Piwik's Tracking API Docs](http://developer.piwik.org/api-reference/tracking-api),
+To tune hupiltyics.js, refer to
  [Piwik's JavaScript Tracking Client Docs](http://developer.piwik.org/api-reference/tracking-javascript), and [Piwik's Custom Variable Docs](http://piwik.org/docs/custom-variables).
+To understand variable meaning, refer to: [Piwik's Tracking API Docs](http://developer.piwik.org/api-reference/tracking-api)
 
-Example:
+### Integration Example
 
 ```html
 <!-- Hupilytics -->
-<script src="piwik.js"></script>
+<script src="hupilytics.js"></script>
 <script type="text/javascript">
   var _paq = _paq || [];
   (function()
   {
-    var u = "http://api.catchbox.hupi.io/v1/$your_brand/hupilytics";
+    var u = "http://api.catchbox.hupi.io/v1/(:account)/hupilytics";
     _paq.push(['setTrackerUrl', u]);  // Required
-    _paq.push(['setSiteId', 1]);  // Required: must be an int
+    _paq.push(['setSiteId', 1]);  // Required: must be an integer
 
     // If you want to track your users, you can provide a UserID, see http://piwik.org/docs/user-id/
     // _paq.push(['setUserId', '$user_id']);  // must be an int
@@ -70,4 +68,3 @@ Example:
 </script>
 <!-- End Hupilytics -->
 ```
-
