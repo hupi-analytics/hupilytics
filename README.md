@@ -19,7 +19,7 @@ To understand variable meaning, refer to: [Piwik's Tracking API Docs](http://dev
   var _paq = _paq || [];
   (function()
   {
-    var u = "http://api.catchbox.hupi.io/v1/(:account)/hupilytics";
+    var u = "http://api.catchbox.hupi.io/v2/(:account)/hupilytics";
     _paq.push(['setTrackerUrl', u]);  // Required
     _paq.push(['setSiteId', 1]);  // Required: must be an integer
 
@@ -68,3 +68,41 @@ To understand variable meaning, refer to: [Piwik's Tracking API Docs](http://dev
 </script>
 <!-- End Hupilytics -->
 ```
+
+## How to follow ecommerce actions with hupilytics
+
+### Ecommerce Orders
+
+To follow the ecommerce orders there are two steps : first, you will add the products :
+
+You can add this code to your
+
+```html
+[...]
+// add the first product to the order
+_paq.push(['addEcommerceItem',
+"productId", // (required) SKU: Product unique identifier
+"productName", // (optional)
+"productCategory", // (optional) You can also specify an array of up to 5 categories eg. ["productCategory1", "productCategory2", "productCategory3","productCategory4","productCategory5"]
+productPrice, // (recommended) Must be a float or an integer
+productQuantity // (optional, default to 1) Must be an integer
+]);
+// You can add others products
+[...]
+// Specifiy the ecommerce order
+_paq.push(['trackEcommerceOrder',
+"orderId", // (required) Unique Order ID
+orderRevenuTotal, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount), must be an integer or a float
+orderSub, // (optional) Order sub total (excludes shipping), must be an integer
+orderTaxAmout, // (optional) Must be an integer or a float
+orderShippingAmount, // (optional) Must be an integer or a float
+orderDiscountOffered // (optional) boolean (set to false for unspecified parameter)
+]);
+// we recommend to leave the call to trackPageView() on the Order confirmation page
+_paq.push(['trackPageView']);
+[...]
+```
+For this features, we recommend to put it on your order confirmation page.
+
+
+
