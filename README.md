@@ -108,7 +108,7 @@ For this features, we recommend to put it on your order confirmation page.
 
 When a user add,delete or modify an item to the cart, hupilytics allows to follow user's actions to the cart.
 
-... html
+'''html
 [...]
  // add the first product to the order
  __paq.push(['addEcommerceItem',
