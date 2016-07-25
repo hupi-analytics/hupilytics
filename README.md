@@ -78,7 +78,10 @@ To follow the ecommerce orders there are two steps : first, you will add the pro
 You can add this code to your
 
 ```html
-[...]
+ <!-- Hupilytics -->
+ <script src="hupilytics.js"></script>
+ <script type="text/javascript">
+ // ...
  // add the first product to the order
  _paq.push(['addEcommerceItem',
  "productId", // (required) SKU: Product unique identifier
@@ -88,7 +91,7 @@ You can add this code to your
  productQuantity // (optional, default to 1) Must be an integer
  ]);
  // You can add others products
-[...]
+ // ...
  // Specifiy the ecommerce order
  _paq.push(['trackEcommerceOrder',
  "orderId", // (required) Unique Order ID
@@ -100,7 +103,9 @@ You can add this code to your
  ]);
  // we recommend to leave the call to trackPageView() on the Order confirmation page
  _paq.push(['trackPageView']);
-[...]
+ //...
+ </script>
+ <!-- End Hupilytics -->
 ```
 For this features, we recommend to put it on your order confirmation page.
 
@@ -109,7 +114,10 @@ For this features, we recommend to put it on your order confirmation page.
 When a user add,delete or modify an item to the cart, hupilytics allows to follow user's actions to the cart.
 
 ```html
-[...]
+ <!-- Hupilytics -->
+ <script src="hupilytics.js"></script>
+ <script type="text/javascript">
+ // ...
  // add the first product to the order
  __paq.push(['addEcommerceItem',
  "productId", // (required) SKU: Product unique identifier
@@ -119,10 +127,12 @@ When a user add,delete or modify an item to the cart, hupilytics allows to follo
  productQuantity // (optional, default to 1) Must be an integer
  ]);
  // Here it is important to add all other products found in the cart, even the products not updated by the current "Add to cart" click
-[...]
+ // ...
  // Records the cart for this visit
  _paq.push(['trackEcommerceCartUpdate',
  cartAmount]); // (required) Must be an integer or a float
  _paq.push(['trackPageView']);
-[...]
+ // ...
+ </script>
+ <!-- End Hupilytics -->
 ```
