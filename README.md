@@ -71,6 +71,8 @@ To understand variable meaning, refer to: [Piwik's Tracking API Docs](http://dev
 
 ## How to follow ecommerce actions with hupilytics
 
+[Piwik's JavaScript Tracking Client Docs](https://piwik.org/docs/ecommerce-analytics/)
+
 ### Ecommerce Orders
 
 To follow the ecommerce orders there are two steps : first, you will add the products :
@@ -136,3 +138,25 @@ When a user add,delete or modify an item to the cart, hupilytics allows to follo
  </script>
  <!-- End Hupilytics -->
 ```
+
+### Product page view 
+
+If you want to know the pages that your costumers visit, you can add this code to follow them :
+
+```html
+ <!-- Hupilytics -->
+ <script src="hupilytics.js"></script>
+ <script type="text/javascript">
+// ...
+// all parameters are optional, but we recommend to set at minimum productId and productName
+_paq.push(['setEcommerceView',
+"productId", // (required) Product unique identifier
+"productName", // (optional) 
+"productCategory", // (optional) You can also specify an array of up to 5 categories eg. ["productCategory1", "productCategory2", "productCategory3","productCategory4","productCategory5"]
+]);
+_paq.push(['trackPageView']);
+ </script>
+ <!-- End Hupilytics -->
+```
+
+For the product category page, set productId to false.
