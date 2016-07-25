@@ -125,3 +125,4 @@ When a user add,delete or modify an item to the cart, hupilytics allows to follo
  cartAmount]); // (required) Must be an integer or a float
  _paq.push(['trackPageView']);
 [...]
+'''
