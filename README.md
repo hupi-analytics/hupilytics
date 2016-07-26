@@ -88,7 +88,7 @@ If you want to add the userId of the user, you can like the exemple :
 
 ### Track events
 
- [Piwik's JavaScript UserId Docs](http://piwik.org/docs/event-tracking/)
+ [Piwik's JavaScript tracking Docs](http://piwik.org/docs/event-tracking/)
 
 If you want tracking events, you can like the exemple :
 
