@@ -86,6 +86,24 @@ If you want to add the userId of the user, you can like the exemple :
  <!-- End Hupilytics -->
 ```
 
+### Track events
+
+ [Piwik's JavaScript UserId Docs](http://piwik.org/docs/event-tracking/)
+
+If you want tracking events, you can like the exemple :
+
+```html
+ <!-- Hupilytics -->
+ <script src="hupilytics.js"></script>
+ <script type="text/javascript">
+ // ...
+ _paq.push(['trackEvent', 'eventCategory', 'eventAction', 'eventName', eventValue]);
+ //...
+ </script>
+ <!-- End Hupilytics -->
+```
+
+eventName and eventValue are optionnal, eventValue must be an float or an integer.
 
 ## How to follow ecommerce actions with hupilytics
 
