@@ -19,7 +19,7 @@ To understand variable meaning, refer to: [Piwik's Tracking API Docs](http://dev
   var _paq = _paq || [];
   (function()
   {
-    var u = "http://api.catchbox.hupi.io/v2/(:account)/hupilytics";
+    var u = "https://api.catchbox.hupi.io/v2/(:account)/hupilytics";
     _paq.push(['setTrackerUrl', u]);  // Required
     _paq.push(['setSiteId', 1]);  // Required: must be an integer
 
