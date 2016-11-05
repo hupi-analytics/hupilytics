@@ -7,7 +7,7 @@ Add hupilytics.js in the assets of your website and require the script in your w
 To send analytic data to hupi's servers , set the `setTrackerUrl` parameter to `http://api.catchbox.hupi.io/v1/(:account)/hupilytics`.
 
 To tune hupiltyics.js, refer to
- [Piwik's JavaScript Tracking Client Docs](http://developer.piwik.org/api-reference/tracking-javascript), and [Piwik's Custom Variable Docs](http://piwik.org/docs/custom-variables).
+ [Piwik's JavaScript Tracking Client Docs](http://developer.piwik.org/api-reference/tracking-javascript), [Piwik's Custom Variable Docs](http://piwik.org/docs/custom-variables) and [Guides to start](http://developer.piwik.org/guides/tracking-javascript-guide).
 To understand variable meaning, refer to: [Piwik's Tracking API Docs](http://developer.piwik.org/api-reference/tracking-api)
 
 ### Integration Example
