@@ -5232,7 +5232,8 @@ if (typeof Piwik !== 'object') {
                         return;
                     }
                     configUserId = userId;
-                    visitorUUID = hash(configUserId).substr(0, 16);
+                  //Donot change visitor id, even user logs in, to track recomendations
+                    //visitorUUID = hash(configUserId).substr(0, 16);
                 },
 
                 /**
