@@ -6568,5 +6568,369 @@ if (typeof piwik_log !== 'function') {
         }
     };
 }
+Array.prototype.extendArray = function(array)
+{
+    this.push.apply(this, array)
+}
+var hupiFuncParamValidator = function(input, paramName, requiredType){
+    var errorList = [];
+    if ((requiredType == "string") && (typeof input != "string")){
+      errorList.push(paramName + " provided " + input + " is of type  " + (typeof input) + " it should be a string");
+    }
 
-/*! @license-end */
+    if ((requiredType == "number") && (typeof input != "number")){
+      errorList.push(paramName + " provided " + input + " is " + (typeof input) + " it should be an integer/number");
+    }
+
+    if ((requiredType == "boolean") && (typeof input != "boolean")){
+      errorList.push(paramName + " provided " + input + " is " + (typeof input) + " it should be a boolean");
+    }
+
+    if ((requiredType == "stringArray") && (typeof input != "object")){
+      errorList.push(paramName + " provided " + input + " is not an array of strings");
+    } else if ((requiredType == "stringArray") && (input.length > 0)){
+      if (typeof input[0] != "string"){
+        errorList.push(paramName + " provided " + input + " , it should be array of strings");
+      }
+    }
+    return errorList;
+}
+var _paq = _paq || [];
+var hupiPageTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode){
+  (function(){
+    var errors = [];
+    errors.extendArray(hupiFuncParamValidator(clientName, "clientName", "string"));
+    errors.extendArray(hupiFuncParamValidator(siteId, "siteId", "number"));
+    errors.extendArray(hupiFuncParamValidator(currencyShortCode, "currencyShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productsDisplayed, "productsDisplayed", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productsRecommended, "productsRecommended", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(LangShortCode, "LangShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(userId, "userId", "string"));
+    if (errors.length > 0){
+        console.log("Data provided to hupilytics tracking has  some issues");
+        console.log(errors);
+    }
+  })();
+
+  (function()
+  {
+  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
+  _paq.push(["setTrackerUrl", u]);  // Required
+  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
+  if (userId != ''){
+    _paq.push(['setUserId', userId]); // IF USER ID IS PRESENT include this line, quote are mandatory
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  function current_ts()
+  {
+  // needed for IE8 compat, see http://bit.ly/1NLevPT
+  if (!Date.now) {
+  Date.now = function() {
+  return new Date().getTime();
+  };
+  }
+  return Math.floor(Date.now() / 1000);
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
+  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
+  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
+  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
+  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+  g.type="text/javascript";
+  g.defer=true;
+  g.async=true;
+  g.src=u;
+  s.parentNode.insertBefore(g,s);
+  })();
+
+  // To actually push the tracking data to hupi catchbox
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+}
+//pageTrack("test", "1", "EUR", [], [], "FR"); - An example call
+
+var hupiProductClickTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode, productId, productName, productPrice, productCategories){
+
+  // Validating function params
+  (function(){
+    var errors = [];
+    errors.extendArray(hupiFuncParamValidator(clientName, "clientName", "string"));
+    errors.extendArray(hupiFuncParamValidator(siteId, "siteId", "number"));
+    errors.extendArray(hupiFuncParamValidator(currencyShortCode, "currencyShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productsDisplayed, "productsDisplayed", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productsRecommended, "productsRecommended", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(LangShortCode, "LangShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productId, "productId", "string"));
+    errors.extendArray(hupiFuncParamValidator(productName, "productName", "string"));
+    errors.extendArray(hupiFuncParamValidator(productPrice, "productPrice", "string"));
+    errors.extendArray(hupiFuncParamValidator(productCategories, "productCategories", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(userId, "userId", "string"));
+    if (errors.length > 0){
+        console.log("Data provided to hupilytics tracking has  some issues");
+        console.log(errors);
+    }
+  })();
+  (function()
+  {
+  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
+  _paq.push(["setTrackerUrl", u]);  // Required
+  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
+  if (userId != '' || userId != undefined){
+    _paq.push(['setUserId', userId]); // IF USER ID IS PRESENT include this line, quote are mandatory
+  }
+
+  // ! Required ! Our API needs the current timestamp for the page
+  function current_ts()
+  {
+  // needed for IE8 compat, see http://bit.ly/1NLevPT
+  if (!Date.now) {
+  Date.now = function() {
+  return new Date().getTime();
+  };
+  }
+  return Math.floor(Date.now() / 1000);
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
+  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
+  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
+  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
+  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+  g.type="text/javascript";
+  g.defer=true;
+  g.async=true;
+  g.src=u;
+  s.parentNode.insertBefore(g,s);
+  })();
+
+  _paq.push(['setEcommerceView', productId, productName, productCategories, productPrice, 1]); //Price should be a String
+  _paq.push(['trackEvent', 'Product Click', 'Clic', productId ]);
+  // To actually push the tracking data to hupi catchbox
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+}
+
+var hupiAddToCartTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode, productId, productName, productPrice, productCategories, productQuantity, totalCartAmount){
+
+  // Validating function params
+  (function(){
+    var errors = [];
+    errors.extendArray(hupiFuncParamValidator(clientName, "clientName", "string"));
+    errors.extendArray(hupiFuncParamValidator(siteId, "siteId", "number"));
+    errors.extendArray(hupiFuncParamValidator(currencyShortCode, "currencyShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productsDisplayed, "productsDisplayed", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productsRecommended, "productsRecommended", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(LangShortCode, "LangShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productId, "productId", "string"));
+    errors.extendArray(hupiFuncParamValidator(productName, "productName", "string"));
+    errors.extendArray(hupiFuncParamValidator(productPrice, "productPrice", "string"));
+    errors.extendArray(hupiFuncParamValidator(productCategories, "productCategories", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productQuantity, "productQuantity", "number"));
+    errors.extendArray(hupiFuncParamValidator(totalCartAmount, "totalCartAmount", "string"));
+    errors.extendArray(hupiFuncParamValidator(userId, "userId", "string"));
+    if (errors.length > 0){
+        console.log("Data provided to hupilytics tracking has  some issues");
+        console.log(errors);
+    }
+  })();
+  (function()
+  {
+  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
+  _paq.push(["setTrackerUrl", u]);  // Required
+  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
+  if (userId != ''){
+    _paq.push(['setUserId', userId]); // IF USER ID IS PRESENT include this line, quote are mandatory
+  }
+
+  // ! Required ! Our API needs the current timestamp for the page
+  function current_ts()
+  {
+  // needed for IE8 compat, see http://bit.ly/1NLevPT
+  if (!Date.now) {
+  Date.now = function() {
+  return new Date().getTime();
+  };
+  }
+  return Math.floor(Date.now() / 1000);
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
+  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
+  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
+  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
+  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+  g.type="text/javascript";
+  g.defer=true;
+  g.async=true;
+  g.src=u;
+  s.parentNode.insertBefore(g,s);
+  })();
+
+  _paq.push(['addEcommerceItem', productId, productName, productCategories, productPrice, productQuantity]);
+  _paq.push(['trackEcommerceCartUpdate', totalCartAmount]);
+    // Here product Added and quantity added(INTEGER in quotes)
+  _paq.push(['trackEvent', 'Add to Cart', productId, productQuantity]);
+  // To actually push the tracking data to hupi catchbox
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+}
+
+var hupiRemoveFromCartTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode, productId, productName, productPrice, productCategories, productQuantity, totalCartAmount){
+
+  // Validating function params
+  (function(){
+    var errors = [];
+    errors.extendArray(hupiFuncParamValidator(clientName, "clientName", "string"));
+    errors.extendArray(hupiFuncParamValidator(siteId, "siteId", "number"));
+    errors.extendArray(hupiFuncParamValidator(currencyShortCode, "currencyShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productsDisplayed, "productsDisplayed", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productsRecommended, "productsRecommended", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(LangShortCode, "LangShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productId, "productId", "string"));
+    errors.extendArray(hupiFuncParamValidator(productName, "productName", "string"));
+    errors.extendArray(hupiFuncParamValidator(productPrice, "productPrice", "string"));
+    errors.extendArray(hupiFuncParamValidator(productCategories, "productCategories", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productQuantity, "productQuantity", "number"));
+    errors.extendArray(hupiFuncParamValidator(totalCartAmount, "totalCartAmount", "string"));
+    errors.extendArray(hupiFuncParamValidator(userId, "userId", "string"));
+    if (errors.length > 0){
+        console.log("Data provided to hupilytics tracking has  some issues");
+        console.log(errors);
+    }
+  })();
+  (function()
+  {
+  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
+  _paq.push(["setTrackerUrl", u]);  // Required
+  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
+  if (userId != ''){
+    _paq.push(['setUserId', userId]); // IF USER ID IS PRESENT include this line, quote are mandatory
+  }
+
+  // ! Required ! Our API needs the current timestamp for the page
+  function current_ts()
+  {
+  // needed for IE8 compat, see http://bit.ly/1NLevPT
+  if (!Date.now) {
+  Date.now = function() {
+  return new Date().getTime();
+  };
+  }
+  return Math.floor(Date.now() / 1000);
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
+  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
+  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
+  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
+  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+  g.type="text/javascript";
+  g.defer=true;
+  g.async=true;
+  g.src=u;
+  s.parentNode.insertBefore(g,s);
+  })();
+
+  _paq.push(['addEcommerceItem', productId, productName, productCategories, productPrice, productQuantity]);
+  _paq.push(['trackEcommerceCartUpdate', totalCartAmount]);
+    // Here product Added and quantity added(INTEGER in quotes)
+  _paq.push(['trackEvent', 'Remove from Cart', productId, productQuantity]);
+  // To actually push the tracking data to hupi catchbox
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+}
+
+var hupiOrderTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode, orderId, orderRevenueTotal, orderSub, orderTaxAmount, orderShippingAmount, orderDiscountOffered){
+
+  orderRevenueTotal = orderRevenueTotal || 0.0;
+  orderSub = orderSub || 0.0;
+  orderTaxAmount = orderTaxAmount || 0.0;
+  orderShippingAmount = orderShippingAmount || 0.0;
+  orderDiscountOffered = orderDiscountOffered || 0.0;
+  // Validating function params
+  (function(){
+    var errors = [];
+    errors.extendArray(hupiFuncParamValidator(clientName, "clientName", "string"));
+    errors.extendArray(hupiFuncParamValidator(siteId, "siteId", "number"));
+    errors.extendArray(hupiFuncParamValidator(currencyShortCode, "currencyShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(productsDisplayed, "productsDisplayed", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(productsRecommended, "productsRecommended", "stringArray"));
+    errors.extendArray(hupiFuncParamValidator(LangShortCode, "LangShortCode", "string"));
+    errors.extendArray(hupiFuncParamValidator(orderId, "orderId", "string"));
+    errors.extendArray(hupiFuncParamValidator(orderRevenueTotal, "orderRevenueTotal", "number"));
+    errors.extendArray(hupiFuncParamValidator(orderSub, "orderSub", "number"));
+    errors.extendArray(hupiFuncParamValidator(orderTaxAmount, "orderTaxAmount", "number"));
+    errors.extendArray(hupiFuncParamValidator(orderShippingAmount, "orderShippingAmount", "number"));
+    errors.extendArray(hupiFuncParamValidator(orderDiscountOffered, "orderDiscountOffered", "boolean"));
+    errors.extendArray(hupiFuncParamValidator(userId, "userId", "string"));
+    if (errors.length > 0){
+        console.log("Data provided to hupilytics tracking has  some issues");
+        console.log(errors);
+    }
+  })();
+  (function()
+  {
+  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
+  _paq.push(["setTrackerUrl", u]);  // Required
+  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
+  if (userId != ''){
+    _paq.push(['setUserId', userId]); // IF USER ID IS PRESENT include this line, quote are mandatory
+  }
+
+  // ! Required ! Our API needs the current timestamp for the page
+  function current_ts()
+  {
+  // needed for IE8 compat, see http://bit.ly/1NLevPT
+  if (!Date.now) {
+  Date.now = function() {
+  return new Date().getTime();
+  };
+  }
+  return Math.floor(Date.now() / 1000);
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
+  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
+  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
+  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
+  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+  g.type="text/javascript";
+  g.defer=true;
+  g.async=true;
+  g.src=u;
+  s.parentNode.insertBefore(g,s);
+  })();
+
+ _paq.push(['trackEcommerceOrder',
+ orderId, // (required) Unique Order ID
+ orderRevenueTotal, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount), must be an integer or a float
+ orderSub, // (optional) Order sub total (excludes shipping and excludes taxes), must be an integer
+ orderTaxAmount, // (optional) Must be an integer or a float
+ orderShippingAmount, // (optional) Must be an integer or a float
+ orderDiscountOffered // (optional) boolean (set to false for unspecified parameter)
+ ]);
+  // To actually push the tracking data to hupi catchbox
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+}
+
+var hupiRecoTrack = function(hupiEndpointName, productId, productName){
+  // Validating function params
+  (function(){
+    var errors = [];
+    errors.extendArray(hupiFuncParamValidator(hupiEndpointName, "hupiEndpointName", "string"));
+    errors.extendArray(hupiFuncParamValidator(productId, "productId", "string"));
+    errors.extendArray(hupiFuncParamValidator(productName, "productName", "string"));
+    if (errors.length > 0){
+        console.log("Data provided to hupilytics Reco tracking has  some issues");
+        console.log(errors);
+    }
+  })();
+  _paq.push(["trackEvent", "Recommandation_HUPI", hupiEndpointName, productId, productName]);
+}
