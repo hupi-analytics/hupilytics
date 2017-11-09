@@ -6810,3 +6810,14 @@ var hupiRecoTrack = function(hupiEndpointName, productId, productName){
   })();
   _paq.push(["trackEvent", "Recommandation_HUPI", hupiEndpointName, productId, productName]);
 }
+
+var hupiVisitorId = function(){
+    var cookieList = document.cookie.split(";");
+    var vidString = null;
+    for (index in cookieList) {
+        if (cookieList[index].match(/pk_id/g)){
+            return cookieList[index].split("=")[1].split(".")[0]
+        }
+    }
+    return null;
+};
