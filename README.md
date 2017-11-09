@@ -1,3 +1,4 @@
+Documentation détaillée : https://hupi-analytics.github.io/slate/?javascript#introduction
 # Hupilytics
 This allow to send analytics data (like google analytics) within hupi's servers.
 hupilytics.js is a fork of [piwik.js](https://github.com/piwik/piwik/blob/master/js/piwik.js), there for hupilytics.js is licensed under the same terms as the piwik.js (GPL v3)
