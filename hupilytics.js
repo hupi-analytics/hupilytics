@@ -6753,13 +6753,34 @@ var hupiRemoveFromCartTrack = function(clientName, siteId, currencyShortCode, us
   _paq.push(["enableLinkTracking"]);
 }
 
-var hupiOrderTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode, orderId, orderRevenueTotal, orderSub, orderTaxAmount, orderShippingAmount, orderDiscountOffered){
+var hupiOrderTrack = function(clientName, siteId, currencyShortCode, userId, productsDisplayed, productsRecommended, LangShortCode, orderId, orderRevenueTotal, orderSub, orderTaxAmount, orderShippingAmount, orderDiscountOffered, productsInCart){
 
   orderRevenueTotal = orderRevenueTotal || 0.0;
   orderSub = orderSub || 0.0;
   orderTaxAmount = orderTaxAmount || 0.0;
   orderShippingAmount = orderShippingAmount || 0.0;
   orderDiscountOffered = orderDiscountOffered || false;
+
+  // Custom validation for products in cart
+  function validateProdCart(input){
+  	if (typeof input != "object"){
+  		return ["productsInCart should be an array of arrays"];
+  	} else if (input.length == 0) {
+  		return ["There should be productsinCart for an order, it can't be empty array"];
+  	} else if (typeof input[0] != "object"){
+  		return ["There should be productsinCart for an order, it should be an array of product arrays"];
+  	} else {
+  		var list = [];
+  		for (i=0; i < input.length; i++){
+  			list = list.concat(hupiFuncParamValidator(input[i][0], "productId in productsInCart Array", "string"));
+  			list = list.concat(hupiFuncParamValidator(input[i][1], "productName in productsInCart Array", "string"));
+  			list = list.concat(hupiFuncParamValidator(input[i][2], "productCategories in productsInCart Array", "stringArray"));
+  			list = list.concat(hupiFuncParamValidator(input[i][3], "productPrice in productsInCart Array", "string"));
+  			list = list.concat(hupiFuncParamValidator(input[i][4], "productQuantity in productsInCart Array", "number"));
+  		}
+  		return list;
+  	}
+  }
   // Validating function params
   (function(){
     var errors = [];
@@ -6776,6 +6797,7 @@ var hupiOrderTrack = function(clientName, siteId, currencyShortCode, userId, pro
     errors.extendArray(hupiFuncParamValidator(orderShippingAmount, "orderShippingAmount", "number"));
     errors.extendArray(hupiFuncParamValidator(orderDiscountOffered, "orderDiscountOffered", "boolean"));
     errors.extendArray(hupiFuncParamValidator(userId, "userId", "string"));
+    errors.extendArray(validateProdCart(productsInCart));
     if (errors.length > 0){
         console.log("Data provided to hupilytics tracking has  some issues");
         console.log(errors);
@@ -6783,7 +6805,12 @@ var hupiOrderTrack = function(clientName, siteId, currencyShortCode, userId, pro
   })();
  hupiTrack(clientName, siteId, userId, currencyShortCode, productsDisplayed, productsRecommended, LangShortCode);
 
- _paq.push(['trackEcommerceOrder',
+ // Pushing all cart products to ecommerce tiem event
+ for (prod=0; prod < productsInCart.length; prod++){
+ 	var out = ["addEcommerceItem"].concat(productsInCart[prod]);
+ 	_paq.push(out);
+ }
+ _paq.push(["trackEcommerceOrder",
  orderId, // (required) Unique Order ID
  orderRevenueTotal, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount), must be an integer or a float
  orderSub, // (optional) Order sub total (excludes shipping and excludes taxes), must be an integer
